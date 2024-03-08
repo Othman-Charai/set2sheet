@@ -1,0 +1,14 @@
+{
+    "name": "my-youcan-shop-app",
+    "id": "dapp_2dPeRMd9QoioRR0xsJ4QVxJ6Thy",
+    "app_url": "http://localhost:3000",
+    "redirect_urls": [
+        "http://localhost:3000/auth/callback"
+    ],
+    "oauth": {
+        "scopes": [
+            "*"
+        ],
+        "client_id": "102"
+    }
+}
