@@ -18,6 +18,11 @@ model Session {
   accessToken String?
 }
 
-model GoogleAccount{
-
+model GoogleSheetAppSetting{
+  id Int @id @default(autoincrement())
+  publicKey String
+  secretKey String
+  storeId String @unique
+  accessToken String?
+  refreshToken String?
 }
