@@ -1,6 +1,5 @@
 import type { IGoogleSheetAppSetting } from "~/types/commonType";
 export const useGoogleConnector = () => {
-  const { $google } = useNuxtApp();
 
   const createAuthUrl = (googleSheetAppSetting: IGoogleSheetAppSetting) => {
     const oauth2Client = new $google.auth.OAuth2(
