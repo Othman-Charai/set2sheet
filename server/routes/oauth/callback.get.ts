@@ -1,10 +1,11 @@
-import { useGoogleConnector } from "~/composables/useGoogleConnector";
 import { useGoogleSheetAppSetting } from "~/composables/useGoogleSheetAppSetting";
-
 export default defineEventHandler(async (event) => {
-  const { body } = await readBody(event);
-  const parsedBody = JSON.parse(body);
-  if (!parsedBody.code) {
-    throw new Error("an error occured");
+  const query = getQuery(event);
+  const {setAccessToken}=useGoogleSheetAppSetting();
+  if(!query.access_token){
+    throw new Error("access token not found");
   }
+  const token = query.access_token;
+  setAccessToken(event.context.session.storeId,token as string,token as string);
+  await sendRedirect(event, '/home.vue')
 });

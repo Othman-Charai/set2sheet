@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import type { IGoogleSheetAppSetting } from "~/types/commonType";
 const publicKey = ref();
 const secretKey = ref();
 const googleSheetAppSetting = ref();
 const storeId = ref<string>();
 const created = ref(true);
 const googleAuthUrl = ref<string>();
+const youcanShopAccessToken=ref<string>();
 
 //hooks
 onBeforeMount(async () => {
   const { data: session } = await useQantra().fetch("/auth/session");
 
   storeId.value = session.value.storeId;
+  youcanShopAccessToken.value=session.value.accessToken
 
   const response = await $fetch(
     `google-app-settings/store/${session.value.storeId}`,
@@ -26,7 +27,7 @@ onBeforeMount(async () => {
 
 // functions
 const createGoogleSheetAppSetting = async () => {
-  const data: IGoogleSheetAppSetting = await $fetch(
+  const data = await $fetch(
     "google-app-settings/create",
     {
       method: "POST",
@@ -46,20 +47,19 @@ const createGoogleSheetAppSetting = async () => {
   );
 };
 
-const redirectToGoogleAuth = async () => {
-  console.log(
-    useGoogleConnector().createAuthUrl(
-      googleSheetAppSetting.value.publicKey as string
-    )
-  );
+const redirectToGoogleAuth =() => {
   window.open(
     useGoogleConnector().createAuthUrl(
       googleSheetAppSetting.value.publicKey as string
     ),
     "_blank"
   );
-  console.log('s')
 };
+
+const connectToShop=async()=>{
+  console.log(youcanShopAccessToken.value)
+  useYoucanShop().subsribeToOrderCreated(youcanShopAccessToken.value as string)
+}
 </script>
 
 <template>
@@ -72,10 +72,10 @@ const redirectToGoogleAuth = async () => {
       <input type="text" v-model="secretKey" />
       <button>create</button>
     </form>
-
     <div v-if="created">
       <button @click="redirectToGoogleAuth">Continue</button>
     </div>
+    <button @click="connectToShop">Connect to shop</button>
   </div>
 </template>
 
