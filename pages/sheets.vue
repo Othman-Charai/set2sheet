@@ -18,34 +18,14 @@ const sheets = ref<Sheet[]>(
 const sheetName = ref('');
 
 const orderFields = ref([
-  {
-    name: 'John',
-    id: 1,
-  },
-  {
-    name: 'Joao',
-    id: 2,
-  },
-  {
-    name: 'Jean',
-    id: 3,
-  },
-  {
-    name: 'Gerard',
-    id: 4,
-  },
+  { name: 'Id', key: 'id', id: 1 },
+  { name: 'Status', key: 'status', id: 2 },
+  { name: 'Total', key: 'total', id: 3 },
+  { name: 'Created at', key: 'created_at', id: 4 },
+  { name: 'Payment status', key: 'status_text', id: 5 },
 ]);
 
-const orderFields2 = ref([
-  {
-    name: 'mostafa',
-    id: 1,
-  },
-  {
-    name: 'arabi',
-    id: 2,
-  },
-]);
+const orderSelectedFields = ref([]);
 
 const deleteSheet = () => {
   showDialog.value = true;
