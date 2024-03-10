@@ -1,32 +1,15 @@
-import type { IGoogleSheetAppSetting } from "~/types/commonType";
+import { useOauth2Client } from "./useOauth2Client";
+
 export const useGoogleConnector = () => {
-
-  const createAuthUrl = (googleSheetAppSetting: IGoogleSheetAppSetting) => {
-    const oauth2Client = new $google.auth.OAuth2(
-      googleSheetAppSetting.publicKey,
-      googleSheetAppSetting.secretKey,
-      process.env.GOOGLE_OAUTH_URL
-    );
-
+  const createAuthUrl = (publicKey: string) => {
     const scopes = ["https://www.googleapis.com/auth/spreadsheets"];
 
-    const url = oauth2Client.generateAuthUrl({
-      access_type: "offline",
-      scope: scopes,
-    });
+    const url = useOauth2Client().generateAuthUrl(publicKey, scopes, "offline");
 
-    return url;
+    return url.replace("watch?v=", "v/");
   };
 
-  const getAccessToken = async (code: string) => {
-    const { tokens } = await $google.oauth2Client.getToken(code);
-    $google.oauth2Client.setCredentials(tokens);
-
-    return {
-      access_token: tokens.access_token,
-      refresh_token: tokens.refresh_token,
-    };
-  };
+  const getAccessToken = async (code: string) => {};
 
   return {
     getAccessToken,

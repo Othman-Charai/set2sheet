@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import type { IGoogleSheetAppSetting } from "~/types/commonType";
-
 const publicKey = ref();
 const secretKey = ref();
-const googleSheetAppSetting = ref<IGoogleSheetAppSetting>();
+const googleSheetAppSetting = ref();
 const storeId = ref<string>();
 const created = ref(true);
 const googleAuthUrl = ref<string>();
 
 //hooks
-onMounted(async () => {
+onBeforeMount(async () => {
   const { data: session } = await useQantra().fetch("/auth/session");
 
-  if (!session?.value?.storeId) {
-    throw new Error("can't get store id");
-  }
   storeId.value = session.value.storeId;
 
   const response = await $fetch(
@@ -23,7 +19,9 @@ onMounted(async () => {
       method: "GET",
     }
   );
-  googleSheetAppSetting.value = response.data;
+  googleSheetAppSetting.value = response.data[0];
+
+  console.log(googleSheetAppSetting.value);
 });
 
 // functions
@@ -43,20 +41,25 @@ const createGoogleSheetAppSetting = async () => {
   googleSheetAppSetting.value = data;
   created.value = true;
 
-   googleAuthUrl.value= useGoogleConnector().createAuthUrl(
+  googleAuthUrl.value = useGoogleConnector().createAuthUrl(
     googleSheetAppSetting.value
   );
 };
 
-const redirectToGoogleAuth=()=>{
-  console.log(useGoogleConnector().createAuthUrl(
-    googleSheetAppSetting.value as IGoogleSheetAppSetting
-  ))
-  window.location=useGoogleConnector().createAuthUrl(
-    googleSheetAppSetting.value as IGoogleSheetAppSetting
+const redirectToGoogleAuth = async () => {
+  console.log(
+    useGoogleConnector().createAuthUrl(
+      googleSheetAppSetting.value.publicKey as string
+    )
   );
-}
-
+  window.open(
+    useGoogleConnector().createAuthUrl(
+      googleSheetAppSetting.value.publicKey as string
+    ),
+    "_blank"
+  );
+  console.log('s')
+};
 </script>
 
 <template>
@@ -71,8 +74,6 @@ const redirectToGoogleAuth=()=>{
     </form>
 
     <div v-if="created">
-
-
       <button @click="redirectToGoogleAuth">Continue</button>
     </div>
   </div>
