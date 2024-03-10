@@ -7,12 +7,4 @@ export default defineEventHandler(async (event) => {
   if (!parsedBody.code) {
     throw new Error("an error occured");
   }
-  const { access_token, refresh_token } =
-    await useGoogleConnector().getAccessToken(parsedBody.code);
-
-  useGoogleSheetAppSetting().setAccessToken(
-    event.context.session.storeId,
-    access_token,
-    refresh_token
-  );
 });
