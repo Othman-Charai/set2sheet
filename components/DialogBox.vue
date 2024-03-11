@@ -48,10 +48,10 @@ const BackdropClick = () => {
             </div>
           </div>
           <div class="footer">
-            <PrimaryButton @click="() => emit('onConfirm')">
+            <PrimaryButton class="xs-button" @click="() => emit('onConfirm')">
               {{ confirmLabel }}
             </PrimaryButton>
-            <SecondaryButton v-if="!hideCancel" @click="() => emit('onCancel')">
+            <SecondaryButton v-if="!hideCancel" class="xs-button" @click="() => emit('onCancel')">
               {{ cancelLabel }}
             </SecondaryButton>
           </div>
@@ -93,6 +93,9 @@ const BackdropClick = () => {
   display: flex;
   flex-direction: row-reverse;
   column-gap: 8px;
+}
+.dialog-box .body .footer .xs-button{
+  padding: 5px 12px;
 }
 .dialog-box .icon {
   color: var(--blue-500);

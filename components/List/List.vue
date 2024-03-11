@@ -3,13 +3,15 @@ import type { Sheet } from '~/types';
 import { ListItem } from '~/components';
 
 defineProps<{ sheets?: Sheet[] }>();
+
+const emit = defineEmits(['delete']);
 </script>
 
 <template>
   <div class="list">
     <template v-for="sheet in sheets" :key="sheet.id">
-      <div>
-        <ListItem :sheet="sheet" />
+      <div class="col">
+        <ListItem :sheet="sheet" @delete="() => emit('delete', sheet)" />
       </div>
     </template>
   </div>
@@ -20,5 +22,9 @@ defineProps<{ sheets?: Sheet[] }>();
   display: grid;
   grid-template-columns: repeat(5,1fr);
   gap: 20px;
+}
+.list .col{
+  width: 100%;
+  overflow: hidden;
 }
 </style>

@@ -13,6 +13,6 @@
   background-color: var(--gray-50);
   border: 1px solid var(--gray-100);
   box-shadow: var(--shadow-xs-gray);
-  cursor: grab
+  cursor: grab;
 }
 </style>
